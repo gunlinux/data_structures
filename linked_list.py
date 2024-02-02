@@ -8,10 +8,10 @@ class Node:
     def __init__(self, value):
         self.value = value
         self.next = None
-        print(f"new node {value} {next}")
+        print(f"new_node {value} {self.next}")
 
     def __str__(self):
-        return f'{self.value} {self.next}'
+        return f'{self.value} {str(self.next)}'
 
 
 class LinkedList:
@@ -102,6 +102,8 @@ def main():
     print(a.get(2))
     a.debug()
     a.insert(index=3, value=3)
+    a.append(666)
+    a.debug()
     a.insert(index=0, value=0)
     a.debug()
 
