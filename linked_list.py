@@ -1,63 +1,66 @@
-from typing import Any
+from typing import Any, Optional
 
 
 class Node:
     value = Any
-    next = Any
+    next = Optional['Node']
 
-    def __init__(self, value, next=None):
+    def __init__(self, value):
         self.value = value
-        self.next = next
+        self.next = None
         print(f"new node {value} {next}")
 
     def __str__(self):
-        next_value = None
-        if self.next:
-            next_value = self.next.value
-
-        return f"{id(self)} {self.value} n -> {next_value}"
+        return f'{self.value} {self.next}'
 
 
 class LinkedList:
-    root: Node | None
+    root: Optional['Node']
 
     def __init__(self):
         self.root = None
 
     def insert(self, value, index):
-        node = self.root
+        node: Optional['Node'] = self.root
         prev = None
 
         for _ in range(index):
             prev = node
-            if node is None:
+            if not isinstance(node, Node):
                 raise IndexError
-            node = node.next
+            node = node.next  # type: ignore
 
-        new_node = Node(value=value, next=node)
+        new_node = Node(value=value)
+        new_node.next = node   # type: ignore
         if node is self.root:
             self.root = new_node
         elif prev:
-            prev.next = new_node
+            prev.next = new_node  # type: ignore
 
     def delete(self, index):
         print(f"delete {index}")
-        pass
+        raise NotImplementedError
 
-    def get(self, index):
-        node = self.root
+    def update(self, index, value):
+        print(f'update {index} {value}')
+        raise NotImplementedError
+
+    def get(self, index: int):
+        node: Optional[Node] = self.root
+        if node is None:
+            raise IndexError
         for _ in range(index):
-            if node.next:
-                node = node.next
+            if isinstance(node, Node):
+                node = node.next  # type: ignore
             else:
                 raise IndexError
         if node is None:
             raise IndexError
         return node.value
 
-    def pop(self, index=None):
+    def pop(self, index=int):
         print(f"pop {index}")
-        pass
+        raise NotImplementedError
 
     def append(self, value):
         new_node = Node(value)
@@ -65,19 +68,19 @@ class LinkedList:
             self.root = new_node
             return
 
-        current_node = self.root
+        current_node: Node = self.root
         while current_node:
             if current_node.next is None:
-                current_node.next = new_node
+                current_node.next = new_node  # type: ignore
                 return
-            current_node = current_node.next
+            current_node = current_node.next   # type: ignore
 
     # walktrough
     def walk(self):
         current_node = self.root
         while current_node:
-            yield current_node.value
-            current_node = current_node.next
+            yield current_node.value  # type: ignore
+            current_node = current_node.next  # type: ignore
 
     def debug(self):
         print()
