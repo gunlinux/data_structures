@@ -1,30 +1,31 @@
-from typing import Any, Literal
-import copy
+from typing import Any
 
 
 class Node:
     value = Any
-    
+    next = Any
+
     def __init__(self, value, next=None):
-        self.value = value 
-        self.next = next 
-        print(f'new node {value} {next}')
+        self.value = value
+        self.next = next
+        print(f"new node {value} {next}")
 
     def __str__(self):
         next_value = None
         if self.next:
             next_value = self.next.value
 
-        return f'{id(self)} {self.value} n -> {next_value}'
+        return f"{id(self)} {self.value} n -> {next_value}"
 
 
 class LinkedList:
-    root: Node|None
+    root: Node | None
+
     def __init__(self):
-        self.root = None 
+        self.root = None
 
     def insert(self, value, index):
-        node = self.root 
+        node = self.root
         prev = None
 
         for _ in range(index):
@@ -40,11 +41,11 @@ class LinkedList:
             prev.next = new_node
 
     def delete(self, index):
-        print(f'delete {index}')
+        print(f"delete {index}")
         pass
 
     def get(self, index):
-        node = self.root 
+        node = self.root
         for _ in range(index):
             if node.next:
                 node = node.next
@@ -55,7 +56,7 @@ class LinkedList:
         return node.value
 
     def pop(self, index=None):
-        print(f'pop {index}')
+        print(f"pop {index}")
         pass
 
     def append(self, value):
@@ -82,11 +83,10 @@ class LinkedList:
         print()
         for i in self.walk():
             print(i)
-            
 
-    
+
 def main():
-    a =  LinkedList()
+    a = LinkedList()
     for i in [187, 6, 999]:
         a.append(i)
 
@@ -98,12 +98,10 @@ def main():
     print(a.get(1))
     print(a.get(2))
     a.debug()
-    a.insert(index=3,value=3)
-    a.insert(index=0,value=0)
+    a.insert(index=3, value=3)
+    a.insert(index=0, value=0)
     a.debug()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
-
-
