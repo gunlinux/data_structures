@@ -77,3 +77,9 @@ def test_update():
         default_list[rand_pos] = random_value
         test_list[rand_pos] = random_value
         assert default_list[rand_pos] == test_list[rand_pos]
+
+
+def test_iter():
+    default_list = fill_default()
+    for i, el in enumerate(default_list):
+        assert default_list[i] == el
