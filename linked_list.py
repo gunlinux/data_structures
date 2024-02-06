@@ -9,7 +9,6 @@ class Node:
     def __init__(self, value):
         self.value = value
         self.next = None
-        print(f"new_node {value} {self.next}")
 
     def __str__(self):
         return f"{self.value} {str(self.next)}"
@@ -38,17 +37,8 @@ class LinkedList:
         elif prev:
             prev.next = new_node  # type: ignore
 
-    def delete(self, index: int):
-        node, prev = self.__get_node_by_index(index)
-        print(f"delete {node.value}")  # type: ignore
-
-        if prev is None:
-            self.root = self.root.next  # type: ignore
-            return
-        prev.next = node.next  # type: ignore
-
-    def update(self, index, value):
-        print(f"update {index} {value}")
+    def update(self, index, value=None):
+        print(f'TODO: not implemented update {index} {value}')
         raise NotImplementedError
 
     def get(self, index: int) -> Any:
@@ -73,13 +63,12 @@ class LinkedList:
         if prev is None:
             value = copy.deepcopy(self.root.value)   # type: ignore
             self.root = self.root.next     # type: ignore
-            print(f"pop: {value}")
             return value
-        value = copy.deepcopy(node.value)  # type: ignore
-
-        prev.next = node.next              # type: ignore
-
-        return value
+        if node:
+            value = copy.deepcopy(node.value)  # type: ignore
+            prev.next = node.next              # type: ignore
+            return value
+        raise IndexError
 
     def append(self, value):
         new_node = Node(value)
@@ -105,28 +94,10 @@ class LinkedList:
         return self.get(index=index)
 
     def debug(self):
-        print("current")
+        print()
         for i in self.walk():
             print(i)
-        print()
 
 
-def main():
-    a = LinkedList()
-    for i in [187, 6, 999]:
-        a.append(i)
-
-    out = []
-    for i in a.walk():
-        out.append(i)
-    print(out)
-    print(f'{a.get(0)} {a[0]}')
-    print(f'{a.get(1)} {a[1]}')
-    print(f'{a.get(2)} {a[2]}')
-    a.debug()
-    a.pop(1)
-    a.debug()
-
-
-if __name__ == "__main__":
-    main()
+def aslist(linked_list: LinkedList) -> list:
+    return [i for i in linked_list.walk()]
