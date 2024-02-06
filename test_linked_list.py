@@ -41,6 +41,7 @@ def test_insert():
         random_pos = random.randint(0, len(test_list))
         test_list.insert(random_pos, random_value)
         default_list.insert(random_pos, random_value)
+        assert len(default_list) == len(test_list)
     assert aslist(default_list) == test_list
 
 
@@ -49,6 +50,7 @@ def test_pop():
     test_list = DEFAULT_TEST_ARR[:]
     for _ in range(len(test_list)):
         assert default_list.pop(0) == test_list.pop(0)
+        assert len(default_list) == len(test_list)
 
     with pytest.raises(IndexError):
         default_list.pop(0)

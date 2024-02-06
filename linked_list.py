@@ -16,9 +16,11 @@ class Node:
 
 class LinkedList:
     root: Optional["Node"]
+    __len: int = 0
 
     def __init__(self):
         self.root = None
+        self.__len = 0
 
     def insert(self, index: int, value: Any):
         node: Optional["Node"] = self.root
@@ -31,6 +33,7 @@ class LinkedList:
             node = node.next  # type: ignore
 
         new_node = Node(value=value)
+        self.__len += 1
         new_node.next = node  # type: ignore
         if node is self.root:
             self.root = new_node
@@ -60,6 +63,7 @@ class LinkedList:
 
     def pop(self, index: int):
         node, prev = self.__get_node_by_index(index)
+        self.__len -= 1
         if prev is None:
             value = copy.deepcopy(self.root.value)   # type: ignore
             self.root = self.root.next     # type: ignore
@@ -72,6 +76,7 @@ class LinkedList:
 
     def append(self, value):
         new_node = Node(value)
+        self.__len += 1
         if self.root is None:
             self.root = new_node
             return
@@ -92,6 +97,9 @@ class LinkedList:
 
     def __getitem__(self, index:  int) -> Any:
         return self.get(index=index)
+
+    def __len__(self) -> int:
+        return self.__len
 
     def debug(self):
         print()
