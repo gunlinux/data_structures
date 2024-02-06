@@ -3,6 +3,10 @@
 Basic data strutrues realisations on python for learning purpose
 
 ## Linked list
+[x] basic
+[ ] testing
+[ ] algos|sort
+[ ] algos|search
 
 ## Array
 

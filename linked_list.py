@@ -1,9 +1,10 @@
 from typing import Any, Optional
+import copy
 
 
 class Node:
     value = Any
-    next = Optional['Node']
+    next = Optional["Node"]
 
     def __init__(self, value):
         self.value = value
@@ -11,17 +12,17 @@ class Node:
         print(f"new_node {value} {self.next}")
 
     def __str__(self):
-        return f'{self.value} {str(self.next)}'
+        return f"{self.value} {str(self.next)}"
 
 
 class LinkedList:
-    root: Optional['Node']
+    root: Optional["Node"]
 
     def __init__(self):
         self.root = None
 
     def insert(self, value, index):
-        node: Optional['Node'] = self.root
+        node: Optional["Node"] = self.root
         prev = None
 
         for _ in range(index):
@@ -31,36 +32,51 @@ class LinkedList:
             node = node.next  # type: ignore
 
         new_node = Node(value=value)
-        new_node.next = node   # type: ignore
+        new_node.next = node  # type: ignore
         if node is self.root:
             self.root = new_node
         elif prev:
             prev.next = new_node  # type: ignore
 
-    def delete(self, index):
-        print(f"delete {index}")
-        raise NotImplementedError
+    def delete(self, index: int):
+        node, prev = self.__get_node_by_index(index)
+        print(f"delete {node.value}")
+        if prev is None:
+            self.root = self.root.next
+            return
+        prev.next = node.next
 
     def update(self, index, value):
-        print(f'update {index} {value}')
+        print(f"update {index} {value}")
         raise NotImplementedError
 
     def get(self, index: int):
+        node, _ = self.__get_node_by_index(index)
+        return node.value
+
+    def __get_node_by_index(self, index: int):
         node: Optional[Node] = self.root
+        prev: Optional[Node] = None
         if node is None:
             raise IndexError
         for _ in range(index):
             if isinstance(node, Node):
+                prev = node  # type: ignore
                 node = node.next  # type: ignore
             else:
                 raise IndexError
-        if node is None:
-            raise IndexError
-        return node.value
+        return node, prev  # type: ignore
 
-    def pop(self, index=int):
-        print(f"pop {index}")
-        raise NotImplementedError
+    def pop(self, index: int):
+        node, prev = self.__get_node_by_index(index)
+        if prev is None:
+            value = copy.deepcopy(self.root.value)
+            self.root = self.root.next
+            print(f"pop: {value}")
+            return value
+        value = copy.deepcopy(node.value)
+        prev.next = node.next
+        return value
 
     def append(self, value):
         new_node = Node(value)
@@ -73,7 +89,7 @@ class LinkedList:
             if current_node.next is None:
                 current_node.next = new_node  # type: ignore
                 return
-            current_node = current_node.next   # type: ignore
+            current_node = current_node.next  # type: ignore
 
     # walktrough
     def walk(self):
@@ -83,9 +99,10 @@ class LinkedList:
             current_node = current_node.next  # type: ignore
 
     def debug(self):
-        print()
+        print("current")
         for i in self.walk():
             print(i)
+        print()
 
 
 def main():
@@ -101,10 +118,7 @@ def main():
     print(a.get(1))
     print(a.get(2))
     a.debug()
-    a.insert(index=3, value=3)
-    a.append(666)
-    a.debug()
-    a.insert(index=0, value=0)
+    a.pop(1)
     a.debug()
 
 
