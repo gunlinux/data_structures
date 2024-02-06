@@ -83,3 +83,17 @@ def test_iter():
     default_list = fill_default()
     for i, el in enumerate(default_list):
         assert default_list[i] == el
+
+
+def test_search():
+    default_list = fill_default()
+    empty_list = LinkedList()
+    test_list = DEFAULT_TEST_ARR[:]
+    for el in test_list:
+        assert default_list.index(el) == test_list.index(el)
+
+    with pytest.raises(ValueError):
+        default_list.index(2023)
+
+    with pytest.raises(ValueError):
+        empty_list.index(2023)

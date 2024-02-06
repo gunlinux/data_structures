@@ -1,3 +1,4 @@
+import enum
 from typing import Any, Optional
 import copy
 
@@ -69,6 +70,12 @@ class LinkedList:
             prev.next = node.next              # type: ignore
             return value
         raise IndexError
+
+    def index(self, value=Any) -> int:
+        for index, el in enumerate(self):
+            if el == value:
+                return index
+        raise ValueError
 
     def append(self, value):
         new_node = Node(value)
