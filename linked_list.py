@@ -40,13 +40,9 @@ class LinkedList:
         elif prev:
             prev.next = new_node  # type: ignore
 
-    def update(self, index, value=None):
-        print(f'TODO: not implemented update {index} {value}')
-        raise NotImplementedError
-
-    def get(self, index: int) -> Any:
+    def __get(self, index: int) -> Any:
         node, _ = self.__get_node_by_index(index)
-        return node.value   # type: ignore
+        return node
 
     def __get_node_by_index(self, index: int):
         node: Optional[Node] = self.root
@@ -96,7 +92,11 @@ class LinkedList:
             current_node = current_node.next  # type: ignore
 
     def __getitem__(self, index:  int) -> Any:
-        return self.get(index=index)
+        return self.__get(index=index).value
+
+    def __setitem__(self, index: int, value: Any) -> None:
+        item_to_update = self.__get(index=index)
+        item_to_update.value = value
 
     def __len__(self) -> int:
         return self.__len

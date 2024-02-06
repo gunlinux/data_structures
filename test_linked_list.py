@@ -66,3 +66,14 @@ def test_pop():
         rand_pos = random.randint(0, len(test_list) - 1)
         assert default_list.pop(rand_pos) == test_list.pop(rand_pos)
     assert aslist(default_list) == test_list
+
+
+def test_update():
+    default_list = fill_default()
+    test_list = DEFAULT_TEST_ARR[:]
+    for _ in range(5):
+        rand_pos = random.randint(0, len(test_list) - 1)
+        random_value = random.randint(0, 666)
+        default_list[rand_pos] = random_value
+        test_list[rand_pos] = random_value
+        assert default_list[rand_pos] == test_list[rand_pos]
