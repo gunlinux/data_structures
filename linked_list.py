@@ -108,13 +108,3 @@ class LinkedList:
 
 def aslist(linked_list: LinkedList) -> list:
     return [i for i in linked_list]
-
-
-if __name__ == '__main__':
-    a = LinkedList()
-    a.append(1)
-    a.append(2)
-    a.append(3)
-    for x in a:
-        print(x)
-    print(aslist(a))
