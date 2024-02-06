@@ -51,7 +51,7 @@ class LinkedList:
         print(f"update {index} {value}")
         raise NotImplementedError
 
-    def get(self, index: int):
+    def get(self, index: int) -> Any:
         node, _ = self.__get_node_by_index(index)
         return node.value   # type: ignore
 
@@ -68,7 +68,7 @@ class LinkedList:
                 raise IndexError
         return node, prev  # type: ignore
 
-    def pop(self, index: int):  
+    def pop(self, index: int):
         node, prev = self.__get_node_by_index(index)
         if prev is None:
             value = copy.deepcopy(self.root.value)   # type: ignore
@@ -101,6 +101,9 @@ class LinkedList:
             yield current_node.value  # type: ignore
             current_node = current_node.next  # type: ignore
 
+    def __getitem__(self, index:  int) -> Any:
+        return self.get(index=index)
+
     def debug(self):
         print("current")
         for i in self.walk():
@@ -117,9 +120,9 @@ def main():
     for i in a.walk():
         out.append(i)
     print(out)
-    print(a.get(0))
-    print(a.get(1))
-    print(a.get(2))
+    print(f'{a.get(0)} {a[0]}')
+    print(f'{a.get(1)} {a[1]}')
+    print(f'{a.get(2)} {a[2]}')
     a.debug()
     a.pop(1)
     a.debug()
