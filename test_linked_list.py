@@ -27,6 +27,7 @@ def test_basic():
 def test_out_of_bounds():
     b = LinkedList()
     a = fill_default()
+    assert len(b) == 0
 
     with pytest.raises(IndexError):
         b[0]
@@ -41,6 +42,7 @@ def test_insert():
         random_pos = random.randint(0, len(test_list))
         test_list.insert(random_pos, random_value)
         default_list.insert(random_pos, random_value)
+        assert len(default_list) == len(aslist(default_list))
         assert len(default_list) == len(test_list)
     assert aslist(default_list) == test_list
 
@@ -51,10 +53,12 @@ def test_pop():
     for _ in range(len(test_list)):
         assert default_list.pop(0) == test_list.pop(0)
         assert len(default_list) == len(test_list)
+        assert len(default_list) == len(aslist(default_list))
 
     with pytest.raises(IndexError):
         default_list.pop(0)
         test_list.pop(0)
+    assert len(default_list) == 0
 
     default_list = fill_default()
     test_list = DEFAULT_TEST_ARR[:]
