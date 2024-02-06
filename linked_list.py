@@ -40,11 +40,12 @@ class LinkedList:
 
     def delete(self, index: int):
         node, prev = self.__get_node_by_index(index)
-        print(f"delete {node.value}")
+        print(f"delete {node.value}")  # type: ignore
+
         if prev is None:
-            self.root = self.root.next
+            self.root = self.root.next  # type: ignore
             return
-        prev.next = node.next
+        prev.next = node.next  # type: ignore
 
     def update(self, index, value):
         print(f"update {index} {value}")
@@ -52,7 +53,7 @@ class LinkedList:
 
     def get(self, index: int):
         node, _ = self.__get_node_by_index(index)
-        return node.value
+        return node.value   # type: ignore
 
     def __get_node_by_index(self, index: int):
         node: Optional[Node] = self.root
@@ -67,15 +68,17 @@ class LinkedList:
                 raise IndexError
         return node, prev  # type: ignore
 
-    def pop(self, index: int):
+    def pop(self, index: int):  
         node, prev = self.__get_node_by_index(index)
         if prev is None:
-            value = copy.deepcopy(self.root.value)
-            self.root = self.root.next
+            value = copy.deepcopy(self.root.value)   # type: ignore
+            self.root = self.root.next     # type: ignore
             print(f"pop: {value}")
             return value
-        value = copy.deepcopy(node.value)
-        prev.next = node.next
+        value = copy.deepcopy(node.value)  # type: ignore
+
+        prev.next = node.next              # type: ignore
+
         return value
 
     def append(self, value):
