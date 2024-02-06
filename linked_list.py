@@ -20,7 +20,7 @@ class LinkedList:
     def __init__(self):
         self.root = None
 
-    def insert(self, value, index):
+    def insert(self, index: int, value: Any):
         node: Optional["Node"] = self.root
         prev = None
 

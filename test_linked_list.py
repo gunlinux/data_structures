@@ -40,7 +40,7 @@ def test_insert():
         random_value = random.randint(0, 666)
         random_pos = random.randint(0, len(test_list))
         test_list.insert(random_pos, random_value)
-        default_list.insert(random_value, random_pos)
+        default_list.insert(random_pos, random_value)
     assert aslist(default_list) == test_list
 
 
