@@ -16,13 +16,15 @@ class Node:
 
 class LinkedList:
     root: Optional["Node"]
+    tail: Optional["Node"]
     __len: int = 0
 
     def __init__(self):
-        self.root = None
+        self.root = self.tail = None
         self.__len = 0
 
     def insert(self, index: int, value: Any):
+        # O(n)
         node: Optional["Node"] = self.root
         prev = None
 
@@ -41,6 +43,7 @@ class LinkedList:
             prev.next = new_node  # type: ignore
 
     def __get(self, index: int) -> Any:
+        #  O(n)
         node, _ = self.__get_node_by_index(index)
         return node
 
@@ -58,6 +61,7 @@ class LinkedList:
         return node, prev  # type: ignore
 
     def pop(self, index: int):
+        # o(n)
         node, prev = self.__get_node_by_index(index)
         self.__len -= 1
         if prev is None:
@@ -71,24 +75,28 @@ class LinkedList:
         raise IndexError
 
     def index(self, value=Any) -> int:
+        # O(n)
         for index, el in enumerate(self):
             if el == value:
                 return index
         raise ValueError
 
     def append(self, value):
+        # O(1)
         new_node = Node(value)
         self.__len += 1
+
         if self.root is None:
-            self.root = new_node
+            self.root = self.tail = new_node
             return
 
-        current_node: Node = self.root
-        while current_node:
-            if current_node.next is None:
-                current_node.next = new_node  # type: ignore
-                return
-            current_node = current_node.next  # type: ignore
+        if self.root.next is None:
+            self.tail = new_node
+            self.root.next = self.tail   # type: ignore
+            return
+
+        self.tail.next = new_node   # type: ignore
+        self.tail = new_node
 
     def __iter__(self):
         current_node = self.root
