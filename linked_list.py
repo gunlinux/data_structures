@@ -114,3 +114,24 @@ class LinkedList:
 
 def aslist(linked_list: LinkedList) -> list:
     return [i for i in linked_list]
+
+
+def find_min(linked_list: LinkedList) -> tuple[int, Any]:
+    min_el = linked_list[0]
+    min_pos = 0
+    for i, el in enumerate(linked_list):
+        if el < min_el:
+            min_el = el
+            min_pos = i
+    return (min_pos, min_el)
+
+
+def min_sort(linked_list: LinkedList) -> LinkedList:
+    if not len(linked_list):
+        return linked_list
+    start_len = len(linked_list)
+    out_list = LinkedList()
+    for _ in range(start_len):
+        min_pos, _ = find_min(linked_list)
+        out_list.append(linked_list.pop(min_pos))
+    return out_list
