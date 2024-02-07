@@ -114,11 +114,6 @@ class LinkedList:
     def __len__(self) -> int:
         return self.__len
 
-    def debug(self):
-        print()
-        for i in self:
-            print(i)
-
 
 def aslist(linked_list: LinkedList) -> list:
     return [i for i in linked_list]
