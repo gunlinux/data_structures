@@ -1,3 +1,4 @@
+from collections.abc import Iterable
 from typing import Any, Optional
 import copy
 
@@ -115,7 +116,7 @@ class LinkedList:
         return self.__len
 
 
-def aslist(linked_list: LinkedList) -> list:
+def aslist(linked_list: Iterable) -> list:
     return [i for i in linked_list]
 
 
