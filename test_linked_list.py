@@ -1,6 +1,6 @@
 import pytest
 import random
-from linked_list import LinkedList, aslist
+from linked_list import LinkedList, aslist, min_sort
 
 DEFAULT_TEST_ARR = [187, 6, 999, 0, -16, 2, 1, 1, 15, -5, 333]
 
@@ -97,3 +97,10 @@ def test_search():
 
     with pytest.raises(ValueError):
         empty_list.index(2023)
+
+
+def test_sort_min():
+    default_list = fill_default()
+    test_list = DEFAULT_TEST_ARR[:]
+    assert aslist(min_sort(default_list)) == sorted(test_list)
+    assert aslist(min_sort(LinkedList())) == []
