@@ -130,7 +130,7 @@ def min_sort(linked_list: LinkedList) -> LinkedList:
     if not len(linked_list):
         return linked_list
     start_len = len(linked_list)
-    out_list = LinkedList()
+    out_list = copy.deepcopy(LinkedList())
     for _ in range(start_len):
         min_pos, _ = find_min(linked_list)
         out_list.append(linked_list.pop(min_pos))
