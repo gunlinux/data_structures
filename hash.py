@@ -1,4 +1,3 @@
-from re import sub
 from linked_list import LinkedList
 from typing import Any, Optional
 
@@ -12,7 +11,7 @@ class HashNode:
         self.value = None
         self.sublist = None
 
-    def set_value(self, key, value):
+    def add_value(self, key, value):
         # if only one
         if self.value is None:
             self.value = value
@@ -22,7 +21,7 @@ class HashNode:
         if self.sublist is None:
             if self.key != key:
                 self.sublist = LinkedList()
-                print(f'added current {self.key} {self.value}')
+                print(f"added current {self.key} {self.value}")
                 self.sublist.append((self.key, self.value))
             else:
                 raise ValueError
@@ -36,6 +35,16 @@ class HashNode:
 
         self.sublist = LinkedList()
         self.sublist.append((key, value))
+
+    def set_value(self, key, value):
+        if self.sublist is None:
+            self.value = value
+            return
+
+        for index, item in enumerate(self.sublist):
+            k, _ = item
+            if k == key:
+                self.sublist[index] = key, value
 
     def get_value(self, key: str, default=None):
         if self.value is None:
@@ -63,8 +72,15 @@ class MyHash:
     def add(self, key, value):
         print(f"add: {key}, {value}")
         index = self.__hashfunc(key)
+        self.__data[index].add_value(key, value)
+        print(self.__data[index])
+
+    def seti(self, key, value):
+        print(f"add: {key}, {value}")
+        index = self.__hashfunc(key)
         self.__data[index].set_value(key, value)
         print(self.__data[index])
+        return
 
     def get(self, key, default=None):
         index = self.__hashfunc(key)
@@ -73,16 +89,3 @@ class MyHash:
 
     def __hashfunc(self, key):
         return len(key)
-
-
-def main() -> None:
-    phonebook = MyHash(max_size=15)
-    phonebook.add("loki", "1999")
-
-    phonebook.add("olegan", "2000")
-    phonebook.add("petr", "1000")
-    phonebook.get("loki")
-    phonebook.get("petr")
-
-if __name__ == "__main__":
-    main()
