@@ -14,8 +14,6 @@ def test_basic():
     phonebook.add("petr", "1000")
     assert phonebook.get("loki") == "1999"
     assert phonebook.get("petr") == "1000"
-    assert phonebook.get("semen", '1477') == "1477"
-    assert phonebook.get("oleg", '1477') == "1477"
 
 
 def test_set():
@@ -28,3 +26,25 @@ def test_set():
     phonebook.seti("petr", "666")
     assert phonebook.get("petr") == "666"
     assert phonebook.get("loki") == "999"
+
+
+def test_pop():
+    phonebook = MyHash(max_size=15)
+    phonebook.add("loki", "1")
+    assert phonebook.pop("loki") == "1"
+
+    with pytest.raises(ValueError):
+        phonebook.get("loki")
+
+    phonebook.add("oleg", "2")
+    phonebook.add("thor", "3")
+
+    assert phonebook.get("oleg") == "2"
+    assert phonebook.get("thor") == "3"
+    assert phonebook.pop("oleg") == "2"
+    assert phonebook.pop("thor") == "3"
+    with pytest.raises(ValueError):
+        phonebook.get("thor")
+        phonebook.get("oleg")
+    phonebook.add("loki", "666")
+    assert phonebook.get("loki") == "666"

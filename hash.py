@@ -21,7 +21,6 @@ class HashNode:
         if self.sublist is None:
             if self.key != key:
                 self.sublist = LinkedList()
-                print(f"added current {self.key} {self.value}")
                 self.sublist.append((self.key, self.value))
             else:
                 raise ValueError
@@ -54,7 +53,6 @@ class HashNode:
             return self.value
 
         for k, v in self.sublist:
-            print(k, v)
             if k == key:
                 return v
         raise ValueError
@@ -67,32 +65,32 @@ class HashNode:
             self.value = None
             return copy
 
-        for k, v in self.sublist:
-            print(k, v)
+        for index, item in enumerate(self.sublist):
+            k, v = item
             if k == key:
+                self.sublist.pop(index)
                 return v
 
     def __str__(self):
-        return f"<{self.value}>"
+        if self.sublist is None:
+            return f"<{self.value}"
+        return f"<{self.value} {len(self.sublist)}>"
 
 
 class MyHash:
     __data: list
 
-    def __init__(self, max_size=100):
+    def __init__(self, max_size=6):
         self.__data = [HashNode() for _ in range(max_size)]
 
     def add(self, key, value):
-        print(f"add: {key}, {value}")
         index = self.__hashfunc(key)
         self.__data[index].add_value(key, value)
         print(self.__data[index])
 
     def seti(self, key, value):
-        print(f"add: {key}, {value}")
         index = self.__hashfunc(key)
         self.__data[index].set_value(key, value)
-        print(self.__data[index])
         return
 
     def get(self, key):
@@ -103,7 +101,6 @@ class MyHash:
     def pop(self, key):
         index = self.__hashfunc(key)
         val = self.__data[index].pop_key(key)
-        print(f"poped {val}")
         return val
 
     def __hashfunc(self, key):
