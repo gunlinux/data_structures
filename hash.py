@@ -46,18 +46,31 @@ class HashNode:
             if k == key:
                 self.sublist[index] = key, value
 
-    def get_value(self, key: str, default=None):
-        if self.value is None:
-            return default
-
+    def get_value(self, key: str):
         if self.sublist is None:
+            if self.value is None:
+                raise ValueError
+
             return self.value
 
         for k, v in self.sublist:
             print(k, v)
             if k == key:
                 return v
-        return default
+        raise ValueError
+
+    def pop_key(self, key: str):
+        if self.sublist is None:
+            if self.value is None:
+                raise ValueError
+            copy = self.value
+            self.value = None
+            return copy
+
+        for k, v in self.sublist:
+            print(k, v)
+            if k == key:
+                return v
 
     def __str__(self):
         return f"<{self.value}>"
@@ -82,9 +95,15 @@ class MyHash:
         print(self.__data[index])
         return
 
-    def get(self, key, default=None):
+    def get(self, key):
         index = self.__hashfunc(key)
-        val = self.__data[index].get_value(key, default)
+        val = self.__data[index].get_value(key)
+        return val
+
+    def pop(self, key):
+        index = self.__hashfunc(key)
+        val = self.__data[index].pop_key(key)
+        print(f"poped {val}")
         return val
 
     def __hashfunc(self, key):
