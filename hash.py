@@ -1,5 +1,6 @@
 from linked_list import LinkedList
 from typing import Any, Optional
+import hashlib
 
 
 class HashNode:
@@ -16,17 +17,18 @@ class HashNode:
         if self.value is None:
             self.value = value
             self.key = key
-            return
+            return 1
 
         if self.sublist is None:
             if self.key != key:
                 self.sublist = LinkedList()
                 self.sublist.append((self.key, self.value))
             else:
+                # key already exist
                 raise ValueError
 
             self.sublist.append((key, value))
-            return
+            return 0
 
         for k, _ in self.sublist:
             if k == key:
@@ -34,6 +36,7 @@ class HashNode:
 
         self.sublist = LinkedList()
         self.sublist.append((key, value))
+        return 0
 
     def set_value(self, key, value):
         if self.sublist is None:
@@ -79,14 +82,17 @@ class HashNode:
 
 class MyHash:
     __data: list
+    __filled: int
+    __size: int
 
-    def __init__(self, max_size=6):
+    def __init__(self, max_size=16777215):
         self.__data = [HashNode() for _ in range(max_size)]
+        self.__filled = 0
+        self.__size = max_size
 
     def add(self, key, value):
         index = self.__hashfunc(key)
-        self.__data[index].add_value(key, value)
-        print(self.__data[index])
+        self.__filled += self.__data[index].add_value(key, value)
 
     def seti(self, key, value):
         index = self.__hashfunc(key)
@@ -104,4 +110,10 @@ class MyHash:
         return val
 
     def __hashfunc(self, key):
-        return len(key)
+        # WAR CRIME
+        hash = hashlib.md5(key.encode()).hexdigest()
+        # print(int(hash[:2], 16))
+        return int(hash[:6], 16)
+
+    def __str__(self):
+        return f"<MyHash {self.__filled} of {self.__size}>"
