@@ -3,7 +3,7 @@ from hash import MyHash
 
 
 def test_basic():
-    phonebook = MyHash(max_size=15)
+    phonebook = MyHash()
     phonebook.add("loki", "1999")
     assert phonebook.get("loki") == "1999"
     with pytest.raises(ValueError):
@@ -17,7 +17,7 @@ def test_basic():
 
 
 def test_set():
-    phonebook = MyHash(max_size=15)
+    phonebook = MyHash()
     phonebook.add("loki", "1999")
     assert phonebook.get("loki") == "1999"
     phonebook.seti("loki", "999")
@@ -29,7 +29,7 @@ def test_set():
 
 
 def test_pop():
-    phonebook = MyHash(max_size=15)
+    phonebook = MyHash()
     phonebook.add("loki", "1")
     assert phonebook.pop("loki") == "1"
 
