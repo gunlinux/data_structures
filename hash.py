@@ -90,7 +90,7 @@ class MyHash:
     __filled: int
     __size: int
 
-    def __init__(self, max_size=16777215):
+    def __init__(self, max_size=64):
         self.__data = [HashNode() for _ in range(max_size)]
         self.__filled = 0
         self.__size = max_size
