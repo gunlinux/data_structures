@@ -76,8 +76,13 @@ class HashNode:
 
     def __str__(self):
         if self.sublist is None:
-            return f"<{self.value}"
-        return f"<{self.value} {len(self.sublist)}>"
+            if self.value is None:
+                return '<>'
+            return f"<{self.value}>"
+        return f"<{self.value}({len(self.sublist)})>"
+
+    def __repr__(self):
+        return self.__str__()
 
 
 class MyHash:
@@ -110,10 +115,9 @@ class MyHash:
         return val
 
     def __hashfunc(self, key):
-        # WAR CRIME
         hash = hashlib.md5(key.encode()).hexdigest()
-        # print(int(hash[:2], 16))
-        return int(hash[:6], 16)
+        hash_result = int(hash[:16], 16) % self.__size
+        return hash_result
 
     def __str__(self):
         return f"<MyHash {self.__filled} of {self.__size}>"
