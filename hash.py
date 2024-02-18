@@ -92,7 +92,7 @@ class HashNode:
             if self.value is None:
                 return "<>"
             return f"<{self.key}>"
-        values =  ','.join([x[0] for x in self.sublist])
+        values = ",".join([x[0] for x in self.sublist])
         return f"<{self.key} ({len(self.sublist)}) {values}>"
 
     def __repr__(self):
@@ -105,12 +105,16 @@ class MyHash:
     __size: int
 
     def __init__(self, max_size=64):
-        self.__data = [HashNode() for _ in range(max_size)]
+        self.__data = [None] * max_size
         self.__filled = 0
         self.__size = max_size
 
     def add(self, key, value):
         index = self.__hashfunc(key)
+        if self.__data[index] is None:
+            self.__data[index] = HashNode()
+            self.__data[index].add_value(key, value)
+            return
         self.__filled += self.__data[index].add_value(key, value)
 
     def seti(self, key, value):
@@ -139,10 +143,10 @@ class MyHash:
         return f"<MyHash {self.__filled} of {self.__size}>"
 
     def keys(self):
-        return [x for c in self.__data for x in c.keys()]
+        return [x for c in self.__data if c is not None for x in c.keys()]
 
     def values(self):
-        return [x for c in self.__data for x in c.values()]
+        return [x for c in self.__data if c is not None for x in c.values()]
 
     def __rehash__(self):
         pass
