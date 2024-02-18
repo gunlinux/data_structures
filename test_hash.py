@@ -48,3 +48,11 @@ def test_pop():
         phonebook.get("oleg")
     phonebook.add("loki", "666")
     assert phonebook.get("loki") == "666"
+
+
+def test_keys():
+    phonebook = MyHash()
+    d = ["zero", "loki", "oleg", "joe", "max", "leha", "sveta", "pumba"]
+    for c in d:
+        phonebook.add(c, c)
+    assert set(phonebook.keys()) == set(d)

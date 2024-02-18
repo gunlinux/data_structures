@@ -6,11 +6,12 @@ import hashlib
 class HashNode:
     value: Any
     sublist: Optional[LinkedList]
-    key: str
+    key: Optional[str]
 
     def __init__(self):
         self.value = None
         self.sublist = None
+        self.key = None
 
     def add_value(self, key, value):
         # if only one
@@ -74,10 +75,15 @@ class HashNode:
                 self.sublist.pop(index)
                 return v
 
+    def keys(self):
+        if self.sublist:
+            return [item[0] for item in self.sublist]
+        return [self.key] if self.key is not None else []
+
     def __str__(self):
         if self.sublist is None:
             if self.value is None:
-                return '<>'
+                return "<>"
             return f"<{self.value}>"
         return f"<{self.value}({len(self.sublist)})>"
 
@@ -121,3 +127,12 @@ class MyHash:
 
     def __str__(self):
         return f"<MyHash {self.__filled} of {self.__size}>"
+
+    def keys(self):
+        return [x for c in self.__data for x in c.keys()]
+
+    def __rehash__(self):
+        pass
+
+    def __resize__(self):
+        pass
