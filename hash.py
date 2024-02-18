@@ -14,28 +14,27 @@ class HashNode:
         self.key = None
 
     def add_value(self, key, value):
-        # if only one
-        if self.value is None:
+        # if empty  node
+        if self.key is None and self.sublist is None:
             self.value = value
             self.key = key
             return 1
 
         if self.sublist is None:
-            if self.key != key:
-                self.sublist = LinkedList()
-                self.sublist.append((self.key, self.value))
-            else:
-                # key already exist
+            # if first collision
+            if key == self.key:
                 raise ValueError
-
+            self.sublist = LinkedList()
+            self.sublist.append((self.key, self.value))
             self.sublist.append((key, value))
+            self.key = None
+            self.value = None
             return 0
 
         for k, _ in self.sublist:
             if k == key:
                 raise ValueError
 
-        self.sublist = LinkedList()
         self.sublist.append((key, value))
         return 0
 
@@ -67,6 +66,7 @@ class HashNode:
                 raise ValueError
             copy = self.value
             self.value = None
+            self.key = None
             return copy
 
         for index, item in enumerate(self.sublist):
@@ -77,15 +77,23 @@ class HashNode:
 
     def keys(self):
         if self.sublist:
+            for item in self.sublist:
+                print(item)
             return [item[0] for item in self.sublist]
         return [self.key] if self.key is not None else []
+
+    def values(self):
+        if self.sublist:
+            return [item[1] for item in self.sublist]
+        return [self.value] if self.value is not None else []
 
     def __str__(self):
         if self.sublist is None:
             if self.value is None:
                 return "<>"
-            return f"<{self.value}>"
-        return f"<{self.value}({len(self.sublist)})>"
+            return f"<{self.key}>"
+        values =  ','.join([x[0] for x in self.sublist])
+        return f"<{self.key} ({len(self.sublist)}) {values}>"
 
     def __repr__(self):
         return self.__str__()
@@ -123,6 +131,7 @@ class MyHash:
     def __hashfunc(self, key):
         hash = hashlib.md5(key.encode()).hexdigest()
         hash_result = int(hash[:16], 16) % self.__size
+        print(f'hash: {key} {hash_result}')
         return hash_result
 
     def __str__(self):
@@ -131,8 +140,15 @@ class MyHash:
     def keys(self):
         return [x for c in self.__data for x in c.keys()]
 
+    def values(self):
+        return [x for c in self.__data for x in c.values()]
+
     def __rehash__(self):
         pass
 
     def __resize__(self):
         pass
+
+    def debug(self):
+        for el in self.__data:
+            print(el)

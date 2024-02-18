@@ -56,3 +56,17 @@ def test_keys():
     for c in d:
         phonebook.add(c, c)
     assert set(phonebook.keys()) == set(d)
+
+
+def test_values():
+    phonebook = MyHash(max_size=2)
+    d = ["zero", "loki", "oleg", "joe", "max", "leha", "sveta", "pumba"]
+    for c in d:
+        phonebook.add(c, c)
+    assert set(phonebook.values()) == set(d)
+
+    phonebook = MyHash(max_size=6)
+    d = ["zero", "loki", "oleg", "joe", "max", "leha", "sveta", "pumba"]
+    for c in d:
+        phonebook.add(c, c)
+    assert set(phonebook.values()) == set(d)
