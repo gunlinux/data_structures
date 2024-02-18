@@ -129,10 +129,11 @@ class MyHash:
         return val
 
     def __hashfunc(self, key):
+        return self.__hashcalc(key) % self.__size
+
+    def __hashcalc(self, key):
         hash = hashlib.md5(key.encode()).hexdigest()
-        hash_result = int(hash[:16], 16) % self.__size
-        print(f'hash: {key} {hash_result}')
-        return hash_result
+        return int(hash[:16], 16)
 
     def __str__(self):
         return f"<MyHash {self.__filled} of {self.__size}>"
