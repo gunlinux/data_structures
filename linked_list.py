@@ -4,24 +4,18 @@ import copy
 
 
 class Node:
-    value = Any
-    next = Optional["Node"]
-
     def __init__(self, value):
         self.value = value
-        self.next = None
+        self.next: Optional["Node"] = None
 
     def __str__(self):
         return f"{self.value} {str(self.next)}"
 
 
 class LinkedList:
-    root: Optional["Node"]
-    tail: Optional["Node"]
-    __len: int = 0
-
     def __init__(self):
-        self.root = self.tail = None
+        self.root: Optional['Node'] = None
+        self.tail: Optional['Node'] = None
         self.__len = 0
 
     def insert(self, index: int, value: Any):
@@ -33,15 +27,15 @@ class LinkedList:
             prev = node
             if not isinstance(node, Node):
                 raise IndexError
-            node = node.next  # type: ignore
+            node = node.next
 
         new_node = Node(value=value)
         self.__len += 1
-        new_node.next = node  # type: ignore
+        new_node.next = node
         if node is self.root:
             self.root = new_node
         elif prev:
-            prev.next = new_node  # type: ignore
+            prev.next = new_node
 
     def __get(self, index: int) -> Any:
         #  O(n)
@@ -55,23 +49,23 @@ class LinkedList:
             raise IndexError
         for _ in range(index):
             if isinstance(node, Node):
-                prev = node  # type: ignore
-                node = node.next  # type: ignore
+                prev = node
+                node = node.next
             else:
                 raise IndexError
-        return node, prev  # type: ignore
+        return node, prev
 
     def pop(self, index: int):
         # o(n)
         node, prev = self.__get_node_by_index(index)
         self.__len -= 1
-        if prev is None:
-            value = copy.deepcopy(self.root.value)   # type: ignore
-            self.root = self.root.next     # type: ignore
+        if prev is None and self.root is not None:
+            value = copy.deepcopy(self.root.value)
+            self.root = self.root.next
             return value
-        if node:
-            value = copy.deepcopy(node.value)  # type: ignore
-            prev.next = node.next              # type: ignore
+        if node and prev is not None:
+            value = copy.deepcopy(node.value)
+            prev.next = node.next
             return value
         raise IndexError
 
@@ -93,19 +87,19 @@ class LinkedList:
 
         if self.root.next is None:
             self.tail = new_node
-            self.root.next = self.tail   # type: ignore
+            self.root.next = self.tail
             return
-
-        self.tail.next = new_node   # type: ignore
+        if self.tail is not None:
+            self.tail.next = new_node
         self.tail = new_node
 
     def __iter__(self):
         current_node = self.root
         while current_node:
-            yield current_node.value  # type: ignore
-            current_node = current_node.next  # type: ignore
+            yield current_node.value
+            current_node = current_node.next
 
-    def __getitem__(self, index:  int) -> Any:
+    def __getitem__(self, index: int) -> Any:
         return self.__get(index=index).value
 
     def __setitem__(self, index: int, value: Any) -> None:
