@@ -1,12 +1,8 @@
 from linked_list import LinkedList
-from typing import Any, Optional
 import hashlib
 
 
 class HashNode:
-    value: Any
-    sublist: Optional[LinkedList]
-    key: Optional[str]
 
     def __init__(self):
         self.value = None
@@ -92,7 +88,7 @@ class HashNode:
             if self.value is None:
                 return "<>"
             return f"<{self.key}>"
-        values =  ','.join([x[0] for x in self.sublist])
+        values = ",".join([x[0] for x in self.sublist])
         return f"<{self.key} ({len(self.sublist)}) {values}>"
 
     def __repr__(self):
