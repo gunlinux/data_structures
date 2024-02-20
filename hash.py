@@ -21,6 +21,9 @@ class HashNode:
                 self.sublist[index] = key, value
 
     def get_value(self, key: str):
+        if len(self.sublist) == 1:
+            return self.sublist.get(0)[1]
+
         for k, v in self.sublist:
             if k == key:
                 return v

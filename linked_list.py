@@ -48,6 +48,9 @@ class LinkedList:
         node, _ = self.__get_node_by_index(index)
         return node
 
+    def get(self, index: int) -> Any:
+        return self.__get(index=index).value
+
     def __get_node_by_index(self, index: int):
         node: Optional[Node] = self.root
         prev: Optional[Node] = None
