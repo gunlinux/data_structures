@@ -12,7 +12,7 @@ class HashNode:
                 raise ValueError
 
         self.sublist.append((key, value))
-        return 0
+        return 1
 
     def set_value(self, key, value):
         for index, item in enumerate(self.sublist):
@@ -34,7 +34,8 @@ class HashNode:
             k, v = item
             if k == key:
                 self.sublist.pop(index)
-                return v
+                return v, 1
+        return None, 0
 
     def keys(self):
         if self.sublist:
@@ -62,7 +63,7 @@ class MyHash:
         index = self.__hashfunc(key)
         if self.__data[index] is None:
             self.__data[index] = HashNode()
-            self.__data[index].add_value(key, value)
+            self.__filled += self.__data[index].add_value(key, value)
             return
         self.__filled += self.__data[index].add_value(key, value)
 
@@ -78,7 +79,8 @@ class MyHash:
 
     def pop(self, key):
         index = self.__hashfunc(key)
-        val = self.__data[index].pop_key(key)
+        val, c = self.__data[index].pop_key(key)
+        self.__filled -= c
         return val
 
     def __hashfunc(self, key):
@@ -102,6 +104,9 @@ class MyHash:
 
     def __resize__(self):
         pass
+
+    def __len__(self):
+        return self.__filled
 
     def debug(self):
         for el in self.__data:

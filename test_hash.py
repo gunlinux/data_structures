@@ -70,3 +70,12 @@ def test_values():
     for c in d:
         phonebook.add(c, c)
     assert set(phonebook.values()) == set(d)
+
+def test_len():
+    phonebook = MyHash(max_size=2)
+    d = ["zero", "loki", "oleg", "joe", "max", "leha", "sveta", "pumba"]
+    for c in d:
+        phonebook.add(c, c)
+    assert len(phonebook) == len(d)
+    phonebook.pop('loki')
+    assert len(phonebook) == len(d) - 1
