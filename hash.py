@@ -1,36 +1,12 @@
 from linked_list import LinkedList
-from typing import Any, Optional
 import hashlib
 
 
 class HashNode:
-    value: Any
-    sublist: Optional[LinkedList]
-    key: Optional[str]
-
     def __init__(self):
-        self.value = None
-        self.sublist = None
-        self.key = None
+        self.sublist: LinkedList = LinkedList()
 
     def add_value(self, key, value):
-        # if empty  node
-        if self.key is None and self.sublist is None:
-            self.value = value
-            self.key = key
-            return 1
-
-        if self.sublist is None:
-            # if first collision
-            if key == self.key:
-                raise ValueError
-            self.sublist = LinkedList()
-            self.sublist.append((self.key, self.value))
-            self.sublist.append((key, value))
-            self.key = None
-            self.value = None
-            return 0
-
         for k, _ in self.sublist:
             if k == key:
                 raise ValueError
@@ -39,36 +15,18 @@ class HashNode:
         return 0
 
     def set_value(self, key, value):
-        if self.sublist is None:
-            self.value = value
-            return
-
         for index, item in enumerate(self.sublist):
             k, _ = item
             if k == key:
                 self.sublist[index] = key, value
 
     def get_value(self, key: str):
-        if self.sublist is None:
-            if self.value is None:
-                raise ValueError
-
-            return self.value
-
         for k, v in self.sublist:
             if k == key:
                 return v
         raise ValueError
 
     def pop_key(self, key: str):
-        if self.sublist is None:
-            if self.value is None:
-                raise ValueError
-            copy = self.value
-            self.value = None
-            self.key = None
-            return copy
-
         for index, item in enumerate(self.sublist):
             k, v = item
             if k == key:
@@ -77,37 +35,25 @@ class HashNode:
 
     def keys(self):
         if self.sublist:
-            for item in self.sublist:
-                print(item)
             return [item[0] for item in self.sublist]
-        return [self.key] if self.key is not None else []
 
     def values(self):
         if self.sublist:
             return [item[1] for item in self.sublist]
-        return [self.value] if self.value is not None else []
 
     def __str__(self):
-        if self.sublist is None:
-            if self.value is None:
-                return "<>"
-            return f"<{self.key}>"
         values = ",".join([x[0] for x in self.sublist])
-        return f"<{self.key} ({len(self.sublist)}) {values}>"
+        return f"({len(self.sublist)}) {values}>"
 
     def __repr__(self):
         return self.__str__()
 
 
 class MyHash:
-    __data: list
-    __filled: int
-    __size: int
-
     def __init__(self, max_size=64):
-        self.__data = [None] * max_size
-        self.__filled = 0
-        self.__size = max_size
+        self.__data: list = [None] * max_size
+        self.__filled: int = 0
+        self.__size: int = max_size
 
     def add(self, key, value):
         index = self.__hashfunc(key)
