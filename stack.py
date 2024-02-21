@@ -3,12 +3,10 @@ from linked_list import Node, aslist
 
 
 class Stack:
-    root: Optional["Node"]
-    __len: int = 0
-
-    def __init__(self):
-        self.root = self.tail = None
-        self.__len = 0
+    def __init__(self) -> None:
+        self.root: Optional["Node"] = None
+        self.tail: Optional["Node"] = None
+        self.__len: int = 0
 
     def pop(self):
         # o(1)
@@ -17,27 +15,27 @@ class Stack:
 
         self.__len -= 1
         value = self.root.value
-        self.root = self.root.next   # type: ignore
+        self.root = self.root.next
         return value
 
-    def push(self, value):
+    def push(self, value: Any) -> None:
         # O(1)
         new_node = Node(value)
-        new_node.next = self.root   # type: ignore
+        new_node.next = self.root
         self.root = new_node
         self.__len += 1
 
     def __iter__(self):
         current_node = self.root
         while current_node:
-            yield current_node.value  # type: ignore
-            current_node = current_node.next  # type: ignore
+            yield current_node.value
+            current_node = current_node.next
 
     def __len__(self) -> int:
         return self.__len
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     a = Stack()
     a.push(1)
     a.push(2)
