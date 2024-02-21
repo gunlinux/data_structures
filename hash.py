@@ -1,5 +1,9 @@
 from linked_list import LinkedList
+from collections import namedtuple
 import hashlib
+
+
+Item = namedtuple('Item', 'key value')
 
 
 class HashNode:
@@ -11,18 +15,17 @@ class HashNode:
             if k == key:
                 raise ValueError
 
-        self.sublist.append((key, value))
+        self.sublist.append(Item(key, value))
         return 1
 
     def set_value(self, key, value):
         for index, item in enumerate(self.sublist):
-            k, _ = item
-            if k == key:
-                self.sublist[index] = key, value
+            if item.key == key:
+                self.sublist[index] = Item(key, value)
 
     def get_value(self, key: str):
         if len(self.sublist) == 1:
-            return self.sublist.get(0)[1]
+            return self.sublist.get(0).value
 
         for k, v in self.sublist:
             if k == key:
@@ -39,11 +42,11 @@ class HashNode:
 
     def keys(self):
         if self.sublist:
-            return [item[0] for item in self.sublist]
+            return [item.key for item in self.sublist]
 
     def values(self):
         if self.sublist:
-            return [item[1] for item in self.sublist]
+            return [item.value for item in self.sublist]
 
     def items(self):
         if self.sublist:
