@@ -58,7 +58,7 @@ class LinkedList:
                 raise IndexError
         return node, prev
 
-    def pop(self, index: int):
+    def pop(self, index: int = 0):
         # o(n)
         node, prev = self.__get_node_by_index(index)
         self.__len -= 1
@@ -72,14 +72,14 @@ class LinkedList:
             return value
         raise IndexError
 
-    def index(self, value=Any) -> int:
+    def index(self, value: Any) -> int:
         # O(n)
         for index, el in enumerate(self):
             if el == value:
                 return index
         raise ValueError
 
-    def append(self, value):
+    def append(self, value: Any):
         # O(1)
         new_node = Node(value)
         self.__len += 1
