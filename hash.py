@@ -125,7 +125,7 @@ class MyHash:
         self.__size = new_size
 
         self.__filled = old_filled
-        print('resize is over')
+        print("resize is over")
         pass
 
     def __len__(self):

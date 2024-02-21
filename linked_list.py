@@ -14,8 +14,8 @@ class Node:
 
 class LinkedList:
     def __init__(self):
-        self.root: Optional['Node'] = None
-        self.tail: Optional['Node'] = None
+        self.root: Optional["Node"] = None
+        self.tail: Optional["Node"] = None
         self.__len = 0
 
     def insert(self, index: int, value: Any):
