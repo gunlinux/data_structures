@@ -61,11 +61,11 @@ class HashNode:
 
 
 class MyHash:
-    def __init__(self, max_size=64, treshhold=0.7):
+    def __init__(self, max_size=64, threshold=0.7):
         self.__data: list = [None] * max_size
         self.__filled: int = 0
         self.__size: int = max_size
-        self.__treshhold = treshhold
+        self.__threshold = threshold
 
     def add(self, key, value, data=None):
         if self.__overload__() and not data:
@@ -134,7 +134,7 @@ class MyHash:
         return self.__filled
 
     def __overload__(self):
-        return (self.__filled / self.__size) > self.__treshhold
+        return (self.__filled / self.__size) > self.__threshold
 
     def debug(self):
         for el in self.__data:
