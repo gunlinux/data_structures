@@ -1,6 +1,6 @@
 from linked_list import LinkedList
 from collections import namedtuple
-import hashlib
+import zlib
 
 
 Item = namedtuple('Item', 'key value')
@@ -101,8 +101,7 @@ class MyHash:
         return self.__hashcalc(key) % size
 
     def __hashcalc(self, key):
-        hash = hashlib.md5(key.encode()).hexdigest()
-        return int(hash[:16], 16)
+        return zlib.crc32(key.encode())
 
     def __str__(self):
         return f"<MyHash {self.__filled} of {self.__size}>"
