@@ -1,6 +1,5 @@
 from collections.abc import Iterable
 from typing import Any, Optional
-import copy
 
 
 class Node:
@@ -63,11 +62,11 @@ class LinkedList:
         node, prev = self.__get_node_by_index(index)
         self.__len -= 1
         if prev is None and self.root is not None:
-            value = copy.deepcopy(self.root.value)
+            value = self.root.value
             self.root = self.root.next
             return value
         if node and prev is not None:
-            value = copy.deepcopy(node.value)
+            value = node.value
             prev.next = node.next
             return value
         raise IndexError
@@ -131,7 +130,7 @@ def min_sort(linked_list: LinkedList) -> LinkedList:
     if not len(linked_list):
         return linked_list
     start_len = len(linked_list)
-    out_list = copy.deepcopy(LinkedList())
+    out_list = LinkedList()
     for _ in range(start_len):
         min_pos, _ = find_min(linked_list)
         out_list.append(linked_list.pop(min_pos))
