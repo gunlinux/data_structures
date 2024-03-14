@@ -2,20 +2,18 @@
 
 Basic data strutrues realisations on python for learning purpose
 
-## Linked list
-[x] basic
-[ ] testing
-[ ] algos|sort
-[ ] algos|search
+[ ] queue
 
-## Array
+[ ] ArrayBuffer
 
-## Hash table
+[x] LinkedList 
 
-## Stack
+[x] hast tables 
 
-## Queue
+[x] Stack
 
 ## Graphs
 
-## Tree
+[ ] Background 
+
+[ ] Tree
