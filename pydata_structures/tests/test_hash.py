@@ -1,5 +1,5 @@
 import pytest
-from hash import MyHash
+from ..hash import MyHash
 
 
 def test_basic():

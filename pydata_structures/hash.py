@@ -1,4 +1,4 @@
-from linked_list import LinkedList
+from .linked_list import LinkedList
 from collections import namedtuple
 from typing import Any
 import zlib

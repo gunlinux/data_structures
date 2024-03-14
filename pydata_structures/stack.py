@@ -1,5 +1,5 @@
 from typing import Any, Optional
-from linked_list import Node, aslist
+from .linked_list import Node, aslist
 
 
 class Stack:

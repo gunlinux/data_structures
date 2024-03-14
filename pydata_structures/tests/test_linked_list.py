@@ -1,6 +1,6 @@
 import pytest
 import random
-from linked_list import LinkedList, aslist, min_sort
+from ..linked_list import LinkedList, aslist, min_sort
 
 DEFAULT_TEST_ARR = [187, 6, 999, 0, -16, 2, 1, 1, 15, -5, 333]
 
