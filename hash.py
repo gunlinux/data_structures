@@ -1,5 +1,6 @@
 from linked_list import LinkedList
 from collections import namedtuple
+from typing import Any
 import zlib
 
 
@@ -7,23 +8,22 @@ Item = namedtuple('Item', 'key value')
 
 
 class HashNode:
-    def __init__(self):
+    def __init__(self) -> None:
         self.sublist: LinkedList = LinkedList()
 
-    def add_value(self, key, value):
+    def add_value(self, key: str, value: Any) -> int:
         for k, _ in self.sublist:
             if k == key:
                 raise ValueError
-
         self.sublist.append(Item(key, value))
         return 1
 
-    def set_value(self, key, value):
+    def set_value(self, key: str, value: Any) -> None:
         for index, item in enumerate(self.sublist):
             if item.key == key:
                 self.sublist[index] = Item(key, value)
 
-    def get_value(self, key: str):
+    def get_value(self, key: str) -> Any:
         if len(self.sublist) == 1:
             return self.sublist.get(0).value
 
@@ -40,34 +40,37 @@ class HashNode:
                 return v, 1
         return None, 0
 
-    def keys(self):
+    def keys(self) -> list[str]:
         if self.sublist:
             return [item.key for item in self.sublist]
+        return []
 
-    def values(self):
+    def values(self) -> list[Any]:
         if self.sublist:
             return [item.value for item in self.sublist]
+        return []
 
-    def items(self):
+    def items(self) -> list[tuple[str, Any]]:
         if self.sublist:
             return [item for item in self.sublist]
+        return []
 
-    def __str__(self):
+    def __str__(self) -> str:
         values = ",".join([x[0] for x in self.sublist])
         return f"({len(self.sublist)}) {values}>"
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return self.__str__()
 
 
 class MyHash:
-    def __init__(self, max_size=64, threshold=0.7):
+    def __init__(self, max_size: int = 64, threshold: float = 0.7) -> None:
         self.__data: list = [None] * max_size
         self.__filled: int = 0
         self.__size: int = max_size
         self.__threshold = threshold
 
-    def add(self, key, value, data=None):
+    def add(self, key: str, value: Any, data=None) -> None:
         if self.__overload__() and not data:
             self.__resize__()
 
@@ -79,45 +82,44 @@ class MyHash:
             data[index] = HashNode()
         self.__filled += data[index].add_value(key, value)
 
-    def seti(self, key, value):
+    def seti(self, key: str, value: Any) -> None:
         index = self.__hashfunc(key)
         self.__data[index].set_value(key, value)
-        return
 
-    def get(self, key):
+    def get(self, key: str) -> Any:
         index = self.__hashfunc(key)
         val = self.__data[index].get_value(key)
         return val
 
-    def pop(self, key):
+    def pop(self, key: str) -> Any:
         index = self.__hashfunc(key)
         val, c = self.__data[index].pop_key(key)
         self.__filled -= c
         return val
 
-    def __hashfunc(self, key, size=None):
+    def __hashfunc(self, key: str, size=None) -> int:
         if size is None:
             return self.__hashcalc(key) % self.__size
         return self.__hashcalc(key) % size
 
-    def __hashcalc(self, key):
+    def __hashcalc(self, key: str) -> int:
         return zlib.crc32(key.encode())
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"<MyHash {self.__filled} of {self.__size}>"
 
-    def keys(self):
+    def keys(self) -> list[str]:
         return [x for c in self.__data if c is not None for x in c.keys()]
 
-    def values(self):
+    def values(self) -> list[Any]:
         return [x for c in self.__data if c is not None for x in c.values()]
 
-    def items(self):
+    def items(self) -> list[tuple[str, Any]]:
         return [x for c in self.__data if c is not None for x in c.items()]
 
-    def __resize__(self):
+    def __resize__(self) -> None:
         new_size = self.__size * 2
-        new_data: list = [None] * new_size
+        new_data: list[HashNode | None] = [None] * new_size
 
         old_filled = self.__filled
 
@@ -127,14 +129,13 @@ class MyHash:
         self.__size = new_size
 
         self.__filled = old_filled
-        pass
 
-    def __len__(self):
+    def __len__(self) -> int:
         return self.__filled
 
-    def __overload__(self):
+    def __overload__(self) -> bool:
         return (self.__filled / self.__size) > self.__threshold
 
-    def debug(self):
+    def debug(self) -> None:
         for el in self.__data:
             print(el)

@@ -1,23 +1,23 @@
 from collections.abc import Iterable
-from typing import Any, Optional
+from typing import Any, Optional, Iterator
 
 
 class Node:
-    def __init__(self, value):
+    def __init__(self, value) -> None:
         self.value = value
         self.next: Optional["Node"] = None
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"{self.value} {str(self.next)}"
 
 
 class LinkedList:
-    def __init__(self):
+    def __init__(self) -> None:
         self.root: Optional["Node"] = None
         self.tail: Optional["Node"] = None
         self.__len = 0
 
-    def insert(self, index: int, value: Any):
+    def insert(self, index: int, value: Any) -> None:
         # O(n)
         node: Optional["Node"] = self.root
         prev = None
@@ -44,7 +44,7 @@ class LinkedList:
     def get(self, index: int) -> Any:
         return self.__get(index=index).value
 
-    def __get_node_by_index(self, index: int):
+    def __get_node_by_index(self, index: int) -> tuple[Node | None, Node | None]:
         node: Optional[Node] = self.root
         prev: Optional[Node] = None
         if node is None:
@@ -57,7 +57,7 @@ class LinkedList:
                 raise IndexError
         return node, prev
 
-    def pop(self, index: int = 0):
+    def pop(self, index: int = 0) -> Any:
         # o(n)
         node, prev = self.__get_node_by_index(index)
         self.__len -= 1
@@ -78,7 +78,7 @@ class LinkedList:
                 return index
         raise ValueError
 
-    def append(self, value: Any):
+    def append(self, value: Any) -> None:
         # O(1)
         new_node = Node(value)
         self.__len += 1
@@ -95,7 +95,7 @@ class LinkedList:
             self.tail.next = new_node
         self.tail = new_node
 
-    def __iter__(self):
+    def __iter__(self) -> Iterator:
         current_node = self.root
         while current_node:
             yield current_node.value
