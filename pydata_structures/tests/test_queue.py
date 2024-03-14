@@ -19,8 +19,7 @@ def test_basic():
     assert len(queue) == 0
     with pytest.raises(IndexError):
         queue.dequeue()
-    with pytest.raises(IndexError):
-        queue.peek()
+    assert queue.peek() is None
 
     for i in range(1, 20):
         queue.enqueue(i)

@@ -2,7 +2,7 @@
 
 Basic data strutrues realisations on python for learning purpose
 
-[ ] queue
+[x] queue
 
 [ ] ArrayBuffer
 
