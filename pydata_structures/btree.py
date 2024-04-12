@@ -1,4 +1,6 @@
 from typing import Optional, Any
+from collections import deque
+import random
 
 
 class Node:
@@ -106,6 +108,30 @@ class Tree:
             return False
         return inner_search(self.root, find_value)
 
+    def print_tree_to_console(self) -> None:
+        """Выводит красиво отформатированное бинарное дерево в консоль. gpt meh :D"""
+        # Проверяем, есть ли корневой узел
+        if self.root is None:
+            print("Tree is empty")
+            return
+
+        # Рекурсивный метод для красивого вывода дерева
+        def display(root, space=0, level_spacing=4):
+            if root is None:
+                return
+
+            # Добавляем отступ в зависимости от уровня дерева
+            space += level_spacing
+
+            display(root.right, space)
+
+            print(" " * space, str(root.value))
+
+            display(root.left, space)
+
+        # Вызов рекурсивного метода для корневого узла
+        display(self.root)
+
 
 def main():
     '''
@@ -119,22 +145,10 @@ def main():
     root = Tree()
     root.add_leaf(5)
     root.add_leaf(3)
-    root.add_leaf(9)
     root.add_leaf(1)
     root.add_leaf(4)
-    root.add_leaf(6)
-    root.add_leaf(11)
-    root.add_leaf(7)
-    root.add_leaf(8)
     root.lnr_walk()
-    root.rnl_walk()
-    root.bsf_walk()
-    print(root.search(5))
-    print(root.search(9))
-    print(root.search(6))
-    print(root.search(10))
-    print(root.search(99))
-    print(root.search(-2))
+    root.print_tree_to_console()
     return
 
 
