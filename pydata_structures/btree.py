@@ -14,85 +14,97 @@ class Node:
         return f'Node({self.value})'
 
 
-def add_leaf(value: Any, root: Optional[Node] = None):
-    if root is None:
-        return Node(value=value)
+class Tree:
+    def __init__(self):
+        self.root = None
 
-    if root.value > value:
-        if root.left is None:
-            root.left = Node(value)
-        else:
-            add_leaf(root=root.left, value=value)
-        return
+    def add_leaf(self, value: Any) -> None:
+        if self.root is None:
+            self.root = Node(value)
+            return
 
-    if root.value < value:
-        if root.right is None:
-            root.right = Node(value)
-        else:
-            add_leaf(root=root.right, value=value)
-        return
+        def add_leaf_inner(root, value):
+            if root and root.value > value:
+                if root.left is None:
+                    root.left = Node(value)
+                else:
+                    add_leaf_inner(root=root.left, value=value)
+                return
 
+            if root and root.value < value:
+                if root.right is None:
+                    root.right = Node(value)
+                else:
+                    add_leaf_inner(root=root.right, value=value)
+                return
+        return add_leaf_inner(self.root, value)
 
-def lnr_walk(root: Optional[Node]) -> None:
-    if root is None:
-        return
-    lnr_walk(root.left)
-    print(root.value)
-    lnr_walk(root.right)
+    def lnr_walk(self) -> None:
+        def walk(root: Optional[Node]) -> None:
+            if root is None:
+                return
+            walk(root.left)
+            print(root.value)
+            walk(root.right)
 
+        return walk(self.root)
 
-def rnl_walk(root: Optional[Node]) -> None:
-    if root is None:
-        return
-    rnl_walk(root.right)
-    print(root.value)
-    rnl_walk(root.left)
+    def rnl_walk(self) -> None:
+        def walk(root: Optional[Node]) -> None:
+            if root is None:
+                return
+            walk(root.right)
+            print(root.value)
+            walk(root.left)
 
+        return walk(self.root)
 
-def nlr_walk(root: Optional[Node]) -> None:
-    if root is None:
-        return
-    print(root.value)
-    nlr_walk(root.left)
-    nlr_walk(root.right)
+    def nlr_walk(self) -> None:
+        def walk(root: Optional[Node]) -> None:
+            if root is None:
+                return
+            print(root.value)
+            walk(root.left)
+            walk(root.right)
 
+        return walk(self.root)
 
-def bsf_walk(root: Node):
-    level = 0
-    current_level = [root]
-    while any(current_level):
-        next_level = []
-        level += 1
-        render_level(level, current_level)
-        for node in current_level:
-            if node:
-                next_level.extend([node.left, node.right])
-            else:
-                next_level.append(None)
-                next_level.append(None)
-        current_level = next_level
+    def bsf_walk(self):
+        level = 0
+        current_level = [self.root]
+        while any(current_level):
+            next_level = []
+            level += 1
+            self.__render_level(level, current_level)
+            for node in current_level:
+                if node:
+                    next_level.extend([node.left, node.right])
+                else:
+                    next_level.append(None)
+                    next_level.append(None)
+            current_level = next_level
 
+    def __render_level(self, level, items, max_len=60):
+        step_count = ((max_len-10*(level+1))//2)
+        temp = ' '.join([f'{str(x if x else " "):5}' for x in items])
+        print(f"{' '*step_count}{temp}")
+        print()
 
-def render_level(level, items, max_len=60):
-    step_count = ((max_len-10*(level+1))//2)
-    temp = ' '.join([f'{str(x if x else " "):5}' for x in items])
-    print(f"{' '*step_count}{temp}")
-    print()
+    def search(self, find_value: Any) -> bool:
+        def inner_search(root, find_value):
+            if root is None:
+                return False
 
+            if root.value == find_value:
+                return True
 
-def search(root: Optional[Node], find_value: Any) -> bool:
-    if root is None:
-        return False
+            if root.value > find_value and root.left:
+                return inner_search(root.left, find_value)
 
-    if root.value == find_value:
-        return True
-
-    if root.value > find_value and root.left:
-        return search(root.left, find_value)
-
-    if root.value < find_value and root.right:
-        return search(root.right, find_value)
-    return False
+            if root.value < find_value and root.right:
+                return inner_search(root.right, find_value)
+            return False
+        return inner_search(self.root, find_value)
 
 
 def main():
@@ -104,22 +116,25 @@ def main():
     /  |   /   |
     1   4   6  11
     '''
-    root = Node(value=5)
-    add_leaf(root=root, value=3)
-    add_leaf(root=root, value=9)
-    add_leaf(root=root, value=1)
-    add_leaf(root=root, value=4)
-    add_leaf(root=root, value=6)
-    add_leaf(root=root, value=11)
-    add_leaf(root=root, value=7)
-    add_leaf(root=root, value=8)
-    print(search(root, 5))
-    print(search(root, 9))
-    print(search(root, 6))
-    print(search(root, 10))
-    print(search(root, 99))
-    print(search(root, -2))
-
+    root = Tree()
+    root.add_leaf(5)
+    root.add_leaf(3)
+    root.add_leaf(9)
+    root.add_leaf(1)
+    root.add_leaf(4)
+    root.add_leaf(6)
+    root.add_leaf(11)
+    root.add_leaf(7)
+    root.add_leaf(8)
+    root.lnr_walk()
+    root.rnl_walk()
+    root.bsf_walk()
+    print(root.search(5))
+    print(root.search(9))
+    print(root.search(6))
+    print(root.search(10))
+    print(root.search(99))
+    print(root.search(-2))
     return
 
 
