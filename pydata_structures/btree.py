@@ -38,6 +38,22 @@ def lnr_walk(root: Optional[Node]) -> None:
     lnr_walk(root.right)
 
 
+def rnl_walk(root: Optional[Node]) -> None:
+    if root is None:
+        return
+    rnl_walk(root.right)
+    print(root.value)
+    rnl_walk(root.left)
+
+
+def nlr_walk(root: Optional[Node]) -> None:
+    if root is None:
+        return
+    print(root.value)
+    nlr_walk(root.left)
+    nlr_walk(root.right)
+
+
 def main():
     '''
     test tree
@@ -54,7 +70,12 @@ def main():
     add_leaf(root=root, value=4)
     add_leaf(root=root, value=6)
     add_leaf(root=root, value=11)
+    print()
     lnr_walk(root)
+    print()
+    rnl_walk(root)
+    print()
+    nlr_walk(root)
     return
 
 
