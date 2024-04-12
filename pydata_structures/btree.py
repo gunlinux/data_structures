@@ -10,6 +10,9 @@ class Node:
     def __str__(self):
         return f'Node({self.value})'
 
+    def __repr__(self):
+        return f'Node({self.value})'
+
 
 def add_leaf(value: Any, root: Optional[Node] = None):
     if root is None:
@@ -54,6 +57,29 @@ def nlr_walk(root: Optional[Node]) -> None:
     nlr_walk(root.right)
 
 
+def bsf_walk(root: Node):
+    level = 0
+    current_level = [root]
+    while any(current_level):
+        next_level = []
+        level += 1
+        render_level(level, current_level)
+        for node in current_level:
+            if node:
+                next_level.extend([node.left, node.right])
+            else:
+                next_level.append(None)
+                next_level.append(None)
+        current_level = next_level
+
+
+def render_level(level, items, max_len=60):
+    step_count = ((max_len-10*(level+1))//2)
+    temp = f' '.join([f'{str(x if x else " "):5}' for x in items])
+    print(f"{' '*step_count}{temp}")
+    print()
+
+
 def main():
     '''
     test tree
@@ -70,12 +96,9 @@ def main():
     add_leaf(root=root, value=4)
     add_leaf(root=root, value=6)
     add_leaf(root=root, value=11)
-    print()
-    lnr_walk(root)
-    print()
-    rnl_walk(root)
-    print()
-    nlr_walk(root)
+    add_leaf(root=root, value=7)
+    add_leaf(root=root, value=8)
+    bsf_walk(root)
     return
 
 
