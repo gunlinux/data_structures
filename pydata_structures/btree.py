@@ -75,9 +75,24 @@ def bsf_walk(root: Node):
 
 def render_level(level, items, max_len=60):
     step_count = ((max_len-10*(level+1))//2)
-    temp = f' '.join([f'{str(x if x else " "):5}' for x in items])
+    temp = ' '.join([f'{str(x if x else " "):5}' for x in items])
     print(f"{' '*step_count}{temp}")
     print()
+
+
+def search(root: Optional[Node], find_value: Any) -> bool:
+    if root is None:
+        return False
+
+    if root.value == find_value:
+        return True
+
+    if root.value > find_value and root.left:
+        return search(root.left, find_value)
+
+    if root.value < find_value and root.right:
+        return search(root.right, find_value)
+    return False
 
 
 def main():
@@ -98,7 +113,13 @@ def main():
     add_leaf(root=root, value=11)
     add_leaf(root=root, value=7)
     add_leaf(root=root, value=8)
-    bsf_walk(root)
+    print(search(root, 5))
+    print(search(root, 9))
+    print(search(root, 6))
+    print(search(root, 10))
+    print(search(root, 99))
+    print(search(root, -2))
+
     return
 
 
