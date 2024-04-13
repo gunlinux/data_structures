@@ -1,4 +1,4 @@
-from typing import Optional, Any, List
+from typing import Generator, Optional, Any, List
 
 
 class Node:
@@ -43,27 +43,36 @@ class Tree:
         print('delete_leaf', value)
         raise NotImplementedError
 
-    def lnr_walk(self) -> None:
+    def lnr_walk(self) -> List[Any]:
+        out: List[Any] = []
+
         def walk(root: Optional[Node]) -> None:
+            nonlocal out
             if root is None:
                 return
             walk(root.left)
-            print(root.value)
+            out.append(root.value)
             walk(root.right)
+        walk(self.root)
+        return out
 
-        return walk(self.root)
+    def rnl_walk(self) -> List[Any]:
+        out: List[Any] = []
 
-    def rnl_walk(self) -> None:
         def walk(root: Optional[Node]) -> None:
+            nonlocal out
             if root is None:
                 return
             walk(root.right)
-            print(root.value)
+            out.append(root.value)
             walk(root.left)
 
-        return walk(self.root)
+        walk(self.root)
+        return out
 
-    def nlr_walk(self) -> None:
+    def nlr_walk(self) -> List[Any]:
+        out: List[Any] = []
+
         def walk(root: Optional[Node]) -> None:
             if root is None:
                 return
@@ -71,7 +80,8 @@ class Tree:
             walk(root.left)
             walk(root.right)
 
-        return walk(self.root)
+        walk(self.root)
+        return out
 
     def bsf_walk(self):
         level = 0
@@ -133,26 +143,3 @@ class Tree:
 
         # Вызов рекурсивного метода для корневого узла
         display(self.root)
-
-
-def main():
-    '''
-    test tree
-       5
-    /     |
-    3        9
-    /  |   /   |
-    1   4   6  11
-    '''
-    root = Tree()
-    root.add_leaf(5)
-    root.add_leaf(3)
-    root.add_leaf(1)
-    root.add_leaf(4)
-    root.lnr_walk()
-    root.print_tree_to_console()
-    return
-
-
-if __name__ == "__main__":
-    main()
