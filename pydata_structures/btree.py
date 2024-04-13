@@ -1,31 +1,29 @@
-from typing import Optional, Any
-from collections import deque
-import random
+from typing import Optional, Any, List
 
 
 class Node:
-    def __init__(self, value, left=None, right=None):
-        self.value = value
-        self.left = left
-        self.right = right
+    def __init__(self, value, left=None, right=None) -> None:
+        self.value: Any = value
+        self.left: Optional["Node"] = left
+        self.right: Optional["Node"] = right
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f'Node({self.value})'
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f'Node({self.value})'
 
 
 class Tree:
-    def __init__(self):
-        self.root = None
+    def __init__(self) -> None:
+        self.root: Optional[Node] = None
 
     def add_leaf(self, value: Any) -> None:
         if self.root is None:
             self.root = Node(value)
             return
 
-        def add_leaf_inner(root, value):
+        def add_leaf_inner(root: Optional[Node], value) -> None:
             if root and root.value > value:
                 if root.left is None:
                     root.left = Node(value)
@@ -40,6 +38,10 @@ class Tree:
                     add_leaf_inner(root=root.right, value=value)
                 return
         return add_leaf_inner(self.root, value)
+
+    def delete_leaf(self, value: Any) -> bool:
+        print('delete_leaf', value)
+        raise NotImplementedError
 
     def lnr_walk(self) -> None:
         def walk(root: Optional[Node]) -> None:
@@ -86,14 +88,14 @@ class Tree:
                     next_level.append(None)
             current_level = next_level
 
-    def __render_level(self, level, items, max_len=60):
+    def __render_level(self, level: int, items: List[Optional[Node]], max_len=60):
         step_count = ((max_len-10*(level+1))//2)
         temp = ' '.join([f'{str(x if x else " "):5}' for x in items])
         print(f"{' '*step_count}{temp}")
         print()
 
     def search(self, find_value: Any) -> bool:
-        def inner_search(root, find_value):
+        def inner_search(root: Optional[Node], find_value: Any):
             if root is None:
                 return False
 
