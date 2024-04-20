@@ -1,4 +1,4 @@
-from typing import Generator, Optional, Any, List
+from typing import Optional, Any, List
 
 
 class Node:
@@ -6,6 +6,9 @@ class Node:
         self.value: Any = value
         self.left: Optional["Node"] = left
         self.right: Optional["Node"] = right
+
+    def childs_count(self) -> int:
+        return bool(self.left) + bool(self.right)
 
     def __str__(self) -> str:
         return f'Node({self.value})'
@@ -40,8 +43,68 @@ class Tree:
         return add_leaf_inner(self.root, value)
 
     def delete_leaf(self, value: Any) -> bool:
+        '''
+               5
+            3      7
+        2     4    6   8
+        --------------
+        1.  Удаление узла, который являет листом =  просто ушатываем его
+        2.  Удаление узла у которого только один потомок -
+        просто заменяем его
+        3.  Удаление узла у которого много потомков:
+            Если у удаляемого узла есть два дочерних узла,
+            найдите его наименьший элемент в правом поддереве
+            (называемый "наименьшим узлом-предшественником")
+            или наибольший элемент в левом поддереве (называемый
+            "наибольшим узлом-последователем").
+Замените удаляемый узел найденным наименьшим или наибольшим элементом.
+Затем удалите заменяющий узел из дерева, чтобы избежать дублирования
+        4. Если удаляемый узел - это root
+        '''
         print('delete_leaf', value)
-        raise NotImplementedError
+
+        def subdelete(parent: Optional[Node], to_kill: Node, right=False):
+            childs = to_kill.childs_count()
+            if not childs:
+                if parent:
+                    if right:
+                        parent.right = None
+                    else:
+                        parent.left = None
+                else:
+                    #  Если удаляем узел корень и единственный
+                    parent = None
+                    self.root = None
+            if childs == 1:
+                #  только один поток
+                pass
+
+            if childs == 2:
+                #  Много потомком
+                pass
+
+        def walk(root: Optional[Node], value: Any) -> None:
+            if root is None:
+                return
+
+            if root.value == value:
+                subdelete(parent=None, to_kill=root)
+                print('gotcha')
+
+            if value > root.value and root.right:
+                if root.right.value == value:
+                    subdelete(root,  root.right, right=True)
+                    return
+                walk(root.right, value)
+
+            if value < root.value and root.left:
+                if root.left.value == value:
+                    subdelete(root, root.left)
+                    return
+                walk(root.left, value)
+            pass
+        walk(self.root, value)
+        return False
 
     def lnr_walk(self) -> List[Any]:
         out: List[Any] = []
@@ -143,3 +206,20 @@ class Tree:
 
         # Вызов рекурсивного метода для корневого узла
         display(self.root)
+
+
+if __name__ == '__main__':
+    tree = Tree()
+    test_data = [5, 3, 7, 2, 4, 6, 8]
+    for el in test_data:
+        tree.add_leaf(el)
+    tree.print_tree_to_console()
+    tree.delete_leaf(6)
+    tree.delete_leaf(12)
+    tree.delete_leaf(8)
+    tree.delete_leaf(7)
+    tree.delete_leaf(2)
+    tree.delete_leaf(4)
+    tree.delete_leaf(3)
+    tree.delete_leaf(5)
+    tree.print_tree_to_console()
