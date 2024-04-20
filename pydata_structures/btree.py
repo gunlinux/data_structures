@@ -75,13 +75,22 @@ class Tree:
                     #  Если удаляем узел корень и единственный
                     parent = None
                     self.root = None
+
             if childs == 1:
-                #  только один поток
-                pass
+                child = to_kill.right if to_kill.right else to_kill.left
+                if parent:
+                    if right:
+                        parent.right = child
+                    else:
+                        parent.left = child
+                else:
+                    self.root = child
 
             if childs == 2:
-                #  Много потомком
-                pass
+                #  Много потомков
+                print(f'find lowest on {to_kill.right}')
+                lowest = self.find_lowest(to_kill.right, to_kill)
+                to_kill.value = lowest
 
         def walk(root: Optional[Node], value: Any) -> None:
             if root is None:
@@ -91,13 +100,13 @@ class Tree:
                 subdelete(parent=None, to_kill=root)
                 print('gotcha')
 
-            if value > root.value and root.right:
+            if root.value and value > root.value and root.right:
                 if root.right.value == value:
-                    subdelete(root,  root.right, right=True)
+                    subdelete(root, root.right, right=True)
                     return
                 walk(root.right, value)
 
-            if value < root.value and root.left:
+            if root.value and value < root.value and root.left:
                 if root.left.value == value:
                     subdelete(root, root.left)
                     return
@@ -117,6 +126,28 @@ class Tree:
             out.append(root.value)
             walk(root.right)
         walk(self.root)
+        return out
+
+    def find_lowest(self, root: Optional[Node], parent: Node) -> Any:
+        out: Optional[Node] = None
+
+        def walk(root: Optional[Node]) -> None:
+            nonlocal out
+            if root is None:
+                return
+            if root.childs_count() == 0:
+                out = root.value
+                parent.right = None
+                return
+            if root.left and not root.left.left:
+                out = root.left.value
+                if root.left.right:
+                    root.left = root.left.right
+                else:
+                    root.left = None
+                return
+            walk(root.left)
+        walk(root)
         return out
 
     def rnl_walk(self) -> List[Any]:
@@ -214,12 +245,8 @@ if __name__ == '__main__':
     for el in test_data:
         tree.add_leaf(el)
     tree.print_tree_to_console()
-    tree.delete_leaf(6)
-    tree.delete_leaf(12)
-    tree.delete_leaf(8)
-    tree.delete_leaf(7)
-    tree.delete_leaf(2)
-    tree.delete_leaf(4)
-    tree.delete_leaf(3)
-    tree.delete_leaf(5)
-    tree.print_tree_to_console()
+    test_data = [5, 3, 7, 2, 4, 6, 8]
+    for i in test_data:
+        tree.delete_leaf(i)
+        tree.print_tree_to_console()
+        print()
