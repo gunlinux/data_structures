@@ -43,25 +43,6 @@ class Tree:
         return add_leaf_inner(self.root, value)
 
     def delete_leaf(self, value: Any) -> bool:
-        '''
-               5
-            3      7
-        2     4    6   8
-        --------------
-        1.  Удаление узла, который являет листом =  просто ушатываем его
-        2.  Удаление узла у которого только один потомок -
-        просто заменяем его
-        3.  Удаление узла у которого много потомков:
-            Если у удаляемого узла есть два дочерних узла,
-            найдите его наименьший элемент в правом поддереве
-            (называемый "наименьшим узлом-предшественником")
-            или наибольший элемент в левом поддереве (называемый
-            "наибольшим узлом-последователем").
-Замените удаляемый узел найденным наименьшим или наибольшим элементом.
-Затем удалите заменяющий узел из дерева, чтобы избежать дублирования
-        4. Если удаляемый узел - это root
-        '''
-        print('delete_leaf', value)
 
         def subdelete(parent: Optional[Node], to_kill: Node, right=False):
             childs = to_kill.childs_count()
@@ -241,12 +222,9 @@ class Tree:
 
 if __name__ == '__main__':
     tree = Tree()
-    test_data = [5, 3, 7, 2, 4, 6, 8]
+    test_data = [5, 3, 7, 2, 4, 6, 8, 12, 15, 13,14, 16, 18, 22, 24, 17]
     for el in test_data:
         tree.add_leaf(el)
     tree.print_tree_to_console()
-    test_data = [5, 3, 7, 2, 4, 6, 8]
-    for i in test_data:
-        tree.delete_leaf(i)
-        tree.print_tree_to_console()
-        print()
+    tree.delete_leaf(12)
+    tree.print_tree_to_console()
