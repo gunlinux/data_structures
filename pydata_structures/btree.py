@@ -1,4 +1,4 @@
-from typing import Optional, Any, List
+from typing import Optional, Any, List, Tuple
 
 
 class Node:
@@ -39,61 +39,57 @@ class Tree:
                     root.right = Node(value)
                 else:
                     add_leaf_inner(root=root.right, value=value)
-                return
         return add_leaf_inner(self.root, value)
 
     def delete_leaf(self, value: Any) -> bool:
 
-        def subdelete(parent: Optional[Node], to_kill: Node, right=False):
-            childs = to_kill.childs_count()
-            if not childs:
-                if parent:
-                    if right:
-                        parent.right = None
-                    else:
-                        parent.left = None
+        def find_parent_and_node(
+            root: Optional[Node], value: Any
+        ) -> Tuple[Optional[Node], Optional[Node], bool]:
+            parent = None
+            right = False
+            node = root
+            while node:
+                if node.value == value:
+                    return parent, node, right
+                elif value < node.value:
+                    parent = node
+                    node = node.left
+                    right = False
                 else:
-                    #  Если удаляем узел корень и единственный
-                    parent = None
-                    self.root = None
+                    parent = node
+                    node = node.right
+                    right = True
+            return None, None, False
 
-            if childs == 1:
-                child = to_kill.right if to_kill.right else to_kill.left
+        def delete_node(parent: Optional[Node], right: bool = False) -> None:
+            nonlocal root
+            if parent:
+                if right:
+                    parent.right = None
+                else:
+                    parent.left = None
+            else:
+                root = None
+
+        parent, node, right = find_parent_and_node(self.root, value)
+        if node:
+            childs = node.childs_count()
+            if not childs:
+                delete_node(parent, right)
+            elif childs == 1:
+                child = node.right if node.right else node.left
                 if parent:
-                    if right:
+                    if node == parent.right:
                         parent.right = child
                     else:
                         parent.left = child
                 else:
-                    self.root = child
-
-            if childs == 2:
-                #  Много потомков
-                print(f'find lowest on {to_kill.right}')
-                lowest = self.find_lowest(to_kill.right, to_kill)
-                to_kill.value = lowest
-
-        def walk(root: Optional[Node], value: Any) -> None:
-            if root is None:
-                return
-
-            if root.value == value:
-                subdelete(parent=None, to_kill=root)
-                print('gotcha')
-
-            if root.value and value > root.value and root.right:
-                if root.right.value == value:
-                    subdelete(root, root.right, right=True)
-                    return
-                walk(root.right, value)
-
-            if root.value and value < root.value and root.left:
-                if root.left.value == value:
-                    subdelete(root, root.left)
-                    return
-                walk(root.left, value)
-            pass
-        walk(self.root, value)
+                    root = child
+            elif childs == 2:
+                lowest = self.find_lowest(node.right, node)
+                node.value = lowest
+            return True
         return False
 
     def lnr_walk(self) -> List[Any]:
@@ -196,7 +192,6 @@ class Tree:
         return inner_search(self.root, find_value)
 
     def print_tree_to_console(self) -> None:
-        """Выводит красиво отформатированное бинарное дерево в консоль. gpt meh :D"""
         # Проверяем, есть ли корневой узел
         if self.root is None:
             print("Tree is empty")
@@ -218,13 +213,3 @@ class Tree:
 
         # Вызов рекурсивного метода для корневого узла
         display(self.root)
-
-
-if __name__ == '__main__':
-    tree = Tree()
-    test_data = [5, 3, 7, 2, 4, 6, 8, 12, 15, 13,14, 16, 18, 22, 24, 17]
-    for el in test_data:
-        tree.add_leaf(el)
-    tree.print_tree_to_console()
-    tree.delete_leaf(12)
-    tree.print_tree_to_console()
