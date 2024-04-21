@@ -39,7 +39,6 @@ class Tree:
                     root.right = Node(value)
                 else:
                     add_leaf_inner(root=root.right, value=value)
-                return
         return add_leaf_inner(self.root, value)
 
     def delete_leaf(self, value: Any) -> bool:
@@ -92,7 +91,6 @@ class Tree:
                     subdelete(root, root.left)
                     return
                 walk(root.left, value)
-            pass
         walk(self.root, value)
         return False
 
@@ -218,13 +216,3 @@ class Tree:
 
         # Вызов рекурсивного метода для корневого узла
         display(self.root)
-
-
-if __name__ == '__main__':
-    tree = Tree()
-    test_data = [5, 3, 7, 2, 4, 6, 8, 12, 15, 13,14, 16, 18, 22, 24, 17]
-    for el in test_data:
-        tree.add_leaf(el)
-    tree.print_tree_to_console()
-    tree.delete_leaf(12)
-    tree.print_tree_to_console()
